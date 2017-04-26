@@ -1,0 +1,20 @@
+﻿<Window x:Class="PwdManagement.photograph"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:WPFMediaKit="clr-namespace:WPFMediaKit.DirectShow.Controls;assembly=WPFMediaKit"
+        xmlns:local="clr-namespace:PwdManagement"
+        Height="600" Width="800"
+        Title="拍照"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="None" Loaded="Window_Loaded">
+    <Window.Resources>
+        <local:truevisibleConverter x:Key="tconverter"/>
+        <local:falsevisibleConverter x:Key="fconverter"/>
+    </Window.Resources>
+    <Grid>
+        <Label Name="cover" Background="Black" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="拍照时请保证脸在黄色方框内。摄像头加载中，请稍后……" FontSize="25" Foreground="Yellow" Visibility="{Binding ElementName=vce,Path=IsPlaying,Converter={StaticResource fconverter}}"/>
+        <WPFMediaKit:VideoCaptureElement x:Name="vce" Stretch="Fill"/>
+        <Label Name="limit" Margin="300,100,300,300" Background="Transparent" BorderBrush="Yellow" BorderThickness="10" Visibility="{Binding ElementName=btn,Path=Visibility}"/>
+        <Button Name="btn" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="50" Width="100" Margin="0,0,0,20" Content="拍照" Visibility="{Binding ElementName=vce,Path=IsPlaying,Converter={StaticResource tconverter}}" IsDefault="True" Click="btn_Click" Background="#5CD564"/>
+        <Button Name="btn2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="50" Width="100" Margin="0,0,0,80" Content="重拍" Visibility="Collapsed" IsDefault="True" Click="btn2_Click" Background="#F14B31"/>
+    </Grid>
+</Window>

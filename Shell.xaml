@@ -1,0 +1,82 @@
+﻿<Window x:Class="PwdManagement.Shell"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:PwdManagement"
+        Title="金羽密钥管理系统"
+        Height="587" Width="238"
+        ResizeMode="CanMinimize"
+        WindowStyle="None"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:unvisibleConverter x:Key="lockerConverter"/>
+        <local:visibleConverter x:Key="visibleConverter"/>
+        <local:powerConverter x:Key="powerConverter"/>
+        <local:truevisibleConverter x:Key="trueVisibleConverter"/>
+        <local:isSelectedConverter x:Key="isSelectedConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Rectangle VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="82" Fill="#02B4FE" MouseLeftButtonDown="DragWindow"/>
+        <Button VerticalAlignment="Top" HorizontalAlignment="Right" Height="20" Width="20" Background="Transparent" BorderBrush="White" Content="x" FontSize="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White" Click="Window_Close"/>
+        <Image Name="face" VerticalAlignment="Top" HorizontalAlignment="Left" Height="65" Width="65" Stretch="Fill" Margin="10,10,0,0" Source="ResourceFile\anonymous.jpg" MouseLeftButtonDown="DragWindow"/>
+        <Label VerticalAlignment="Top" HorizontalAlignment="Left" Height="35" Width="85" Margin="75,15,0,0" FontSize="19" BorderBrush="Transparent" FontFamily="黑体" Foreground="White" Content="{Binding userInfo.userName}" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" MouseLeftButtonDown="DragWindow" BorderThickness="0"/>
+        <Label VerticalAlignment="Top" HorizontalAlignment="Left" Height="25" Width="85" Margin="75,50,0,0" FontSize="12" BorderBrush="Transparent" FontFamily="黑体" Foreground="White" Name="timeShow" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" MouseLeftButtonDown="DragWindow"/>
+        <Label VerticalAlignment="Top" HorizontalAlignment="Left" Height="35" Width="50" Margin="160,15,0,0" FontSize="27" BorderBrush="Transparent" FontFamily="黑体" Content="{Binding userInfo.power}" HorizontalContentAlignment="Right"  VerticalContentAlignment="Center" MouseLeftButtonDown="DragWindow"/>
+        <Label VerticalAlignment="Top" HorizontalAlignment="Left" Height="25" Width="70" Margin="155,50,0,0" FontSize="10" BorderBrush="Transparent" FontFamily="黑体" Content="当前辨识度"/>
+        <Label VerticalAlignment="Top" HorizontalAlignment="Left" Height="29" Width="28" Margin="210,21,0,0" FontSize="21" BorderBrush="Transparent" FontFamily="黑体" Content="%" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom"/>
+        <Button VerticalAlignment="Top" HorizontalAlignment="Left" Height="42" Width="119" Margin="0,82,0,0" Name="changeValue_button" Content="权限认定" Click="changeValue_button_Click"/>
+        <Button VerticalAlignment="Top" HorizontalAlignment="Left" Height="42" Width="119" Margin="119,82,0,0" Name="changePower_button" Content="修改验证" Click="changePower_button_Click"/>
+        <Image VerticalAlignment="Top" HorizontalAlignment="Left" Height="20" Width="20" Margin="10,137,0,0" Source="ResourceFile\search.png" Stretch="Fill"/>
+        <TextBox VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="26" Margin="36,135,10,0" Name="SeachText" TextChanged="SeachText_TextChanged" VerticalContentAlignment="Center"/>
+
+        <ItemsControl ItemsSource="{Binding tabItem}" Width="50" Margin="1,165,0,45" HorizontalAlignment="Left" BorderThickness="0" BorderBrush="Transparent">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <Button Content="{Binding header}" BorderThickness="0" BorderBrush="Transparent" Click="tabitem_changed" Foreground="White" Background="{Binding isSelected,Converter={StaticResource isSelectedConverter}}" FontSize="20"/>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <ItemsControl ItemsSource="{Binding userData}" Margin="52,165,1,45" BorderThickness="0" BorderBrush="Transparent">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid Visibility="{Binding isVisible,Converter={StaticResource trueVisibleConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="45"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="28"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Button Name="SelectButton" Content="{Binding Name,Mode=TwoWay}" Click="Button_Click" Background="{Binding isSelected,Converter={StaticResource isSelectedConverter}}" BorderBrush="Transparent" BorderThickness="0" HorizontalContentAlignment="Left" Foreground="White"/>
+                        <TextBox Name="NameText" Text="{Binding Name,Mode=TwoWay}" Visibility="Collapsed" LostKeyboardFocus="NameText_LostKeyboardFocus" VerticalContentAlignment="Center" TextChanged="NameText_TextChanged"/>
+                        <ToggleButton Grid.Column="1" Name="OpenButton" IsChecked="False" Content="展开"/>
+                        <TextBox Grid.Row="1" Height="71" Grid.ColumnSpan="2" Name="DataText" AcceptsReturn="True" TextWrapping="Wrap" TextChanged="DataText_TextChanged" Text="{Binding Data,Mode=TwoWay}" Visibility="Collapsed"/>
+                    </Grid>
+                    <DataTemplate.Triggers>
+                        <Trigger SourceName="OpenButton" Property="IsChecked" Value="True">
+                            <Setter TargetName="DataText" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="OpenButton" Property="Content" Value="收起"/>
+                        </Trigger>
+                        <DataTrigger Binding="{Binding isEditable}" Value="True">
+                            <Setter TargetName="SelectButton" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="NameText" Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Image VerticalAlignment="Top" HorizontalAlignment="Left" Stretch="Fill" Height="70" Width="54" Margin="117,230,0,0" Name="locker" Source="ResourceFile\lock.png" Visibility="{Binding userInfo.power,Converter={StaticResource lockerConverter}}"/>
+        <Label VerticalAlignment="Top" HorizontalAlignment="Left" Height="68" Width="108" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="90,300,0,0" FontSize="10" FontFamily="黑体" Content="     权限不足&#13;您可以通过权限认定&#13;    增加辨识度" Foreground="Black" Visibility="{Binding userInfo.power,Converter={StaticResource lockerConverter}}"/>
+        <Button VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="40" Width="119" Name="add_button" Content="添加密钥" Click="add_button_Click" IsEnabled="{Binding userInfo.power,Converter={StaticResource powerConverter}}"/>
+        <Button VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="40" Width="119" Name="remove_button" Content="删除密钥" Click="remove_button_Click" IsEnabled="{Binding userInfo.power,Converter={StaticResource powerConverter}}"/>
+    </Grid>
+</Window>

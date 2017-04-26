@@ -1,0 +1,13 @@
+﻿<Window x:Class="PwdManagement.verityFingerprint"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="指纹安全验证" Height="450" Width="228" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="None">
+    <Grid>
+        <Label HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="指纹安全验证" Background="#02B4FE" Foreground="White" FontFamily="CloudMeiHeiGBK" FontSize="24" Height="118" MouseLeftButtonDown="Label_MouseLeftButtonDown"/>
+        <Image HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,118,0,0" Source="..\ResourceFile\fingerdemo.png" Stretch="Fill" Height="228"/>
+        <Label Name="lb" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="79" Margin="0,267,0,0" Content="?" FontFamily="黑体" Foreground="White"  FontSize="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" BorderBrush="White" BorderThickness="0,2,0,0" Background="Black" Opacity="0.5"/>
+        <Button Name="btn" VerticalAlignment="Top" HorizontalAlignment="Center" Height="28" Width="181" Margin="0,365,0,0" Content="获  取" Background="#E6433C" BorderBrush="Transparent" Foreground="White" Click="btn_Click"/>
+        <Button VerticalAlignment="Top" HorizontalAlignment="Left" Height="28" Width="84" Margin="24,407,0,0" Content="确认" Background="#02B4FE" BorderBrush="Transparent" Foreground="White" Click="Button_Click"/>
+        <Button VerticalAlignment="Top" HorizontalAlignment="Right" Height="28" Width="84" Margin="0,407,24,0" Content="取消" Background="#E76026" BorderBrush="Transparent" Foreground="White" Click="Button_Click_1"/>
+    </Grid>
+</Window>
